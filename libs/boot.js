@@ -1,7 +1,13 @@
+const db = require('../db');
+
 module.exports = app => {
-    app.db.sync().done(() => {
+    db.sequelize.sync().then(() => {
+        console.log("fffkfkfkfkf");
+        
         app.listen(app.get("port"), () => {
             console.log(`Task API - Port ${app.get("port")}`);
         });
+    }).catch(err=>{
+        console.log(err);
     });
 };
