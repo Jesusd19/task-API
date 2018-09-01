@@ -45,9 +45,18 @@ module.exports = app => {
         })
         .put((req, res) => {
             // "/tasks/1": Update a task
-            
+            Tasks.update(req.body, {where: req.params})
+                .then(result => res.sendStaus(204))
+                .catch(error => {
+                    res.status(412).json({msg: error.message});
+                });
         })
         .delete((req, res) => {
             // "/tasks/1": Delete a task
+            Tasks.destroy({where: req.params})
+                .then(result => res.sendStaus(204))
+                .catch(error => {
+                    res.status(412).json({msg: error.message});
+                });
         });
 };
