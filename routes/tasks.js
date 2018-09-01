@@ -1,4 +1,3 @@
-import Tasks from '../models/tasks';
 module.exports = app => {
     app.route('/tasks')
         .all((req, res, next) => {
@@ -8,7 +7,9 @@ module.exports = app => {
         })
         .get((req, res) => {
             // "/tasks": List tasks
-            Tasks.findAll({})
+            console.log(typeof Tasks);
+
+            app.db.Tasks.findAll({})
                 .then(result => res.json(result))
                 .catch(error => {
                     res.status(412).json({ msg: error.message });
@@ -16,10 +17,10 @@ module.exports = app => {
         })
         .post((req, res) => {
             // "/tasks": Save new task
-            Tasks.create(req.body)
+            app.db.Tasks.create(req.body)
                 .then(result => res.json(result))
                 .catch(error => {
-                    res.status(412).json({msg: error.message});
+                    res.status(412).json({ msg: error.message });
                 });
         });
 
@@ -31,32 +32,32 @@ module.exports = app => {
         })
         .get((req, res) => {
             // "/tasks/1": Find a task
-            Tasks.findOne({where : req.params})
+            app.db.Tasks.findOne({ where: req.params })
                 .then(result => {
                     if (result) {
-                        res.json(result);                        
+                        res.json(result);
                     } else {
                         res.sendStaus(404);
                     }
                 })
                 .catch(error => {
-                    res.status(412).json({msg: error.message});
+                    res.status(412).json({ msg: error.message });
                 });
         })
         .put((req, res) => {
             // "/tasks/1": Update a task
-            Tasks.update(req.body, {where: req.params})
+            app.db.Tasks.update(req.body, { where: req.params })
                 .then(result => res.sendStaus(204))
                 .catch(error => {
-                    res.status(412).json({msg: error.message});
+                    res.status(412).json({ msg: error.message });
                 });
         })
         .delete((req, res) => {
             // "/tasks/1": Delete a task
-            Tasks.destroy({where: req.params})
+            app.db.Tasks.destroy({ where: req.params })
                 .then(result => res.sendStaus(204))
                 .catch(error => {
-                    res.status(412).json({msg: error.message});
+                    res.status(412).json({ msg: error.message });
                 });
         });
 };
